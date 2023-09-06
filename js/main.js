@@ -1,11 +1,3 @@
-/*
-
->> kasperkamperman.com - 2018-04-18
->> kasperkamperman.com - 2020-05-17
->> https://www.kasperkamperman.com/blog/camera-template/
-
-*/
-
 import {
   GestureRecognizer,
   FilesetResolver,
@@ -168,14 +160,14 @@ async function predictWebcam() {
   }
   canvasCtx.restore();
   if (results.gestures.length > 0) {
-    const currentTime = Date.now(); // Obtener el tiempo actual
+    //const currentTime = Date.now(); // Obtener el tiempo actual
     const categoryName = results.gestures[0][0].categoryName;
     const categoryScore = parseFloat(
       results.gestures[0][0].score * 100
     ).toFixed(2);
     console.log(`LETRA: ${categoryName}\n PROBABILIDAD: ${categoryScore} %\n FRASE: ${gestureText.join('')}`)
     // Verificar si ha pasado suficiente tiempo desde el último gesto similar
-    if (currentTime - lastGestureTime >= minTimeBetweenGestures) {
+    /*if (currentTime - lastGestureTime >= minTimeBetweenGestures) {
       // Filtrar gestos repetidos
       if (categoryName !== lastSavedLetter || categoryName === "R") {
         //gestureOutput.style.display = "block";
@@ -190,7 +182,7 @@ async function predictWebcam() {
           lastSavedLetter = categoryName;
         }
       }
-    }
+    }*/
   } else {
     //gestureOutput.style.display = "none";
   }
