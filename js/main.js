@@ -1,21 +1,21 @@
 import {
   GestureRecognizer,
   FilesetResolver,
-} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-const demosSection = document.getElementById("vid_container");
+} from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0';
+const demosSection = document.getElementById('vid_container');
 let gestureRecognizer;
-let runningMode = "IMAGE";
+let runningMode = 'IMAGE';
 let enableWebcamButton;
 let webcamRunning = true;
-const videoHeight = "360px";
-const videoWidth = "480px";
+const videoHeight = '879px';
+const videoWidth = '534px';
 let gestureText = [];
-let lastSavedLetter = "";
+let lastSavedLetter = '';
 let lastGestureTime = 0; // Registro del tiempo del último gesto
 const minTimeBetweenGestures = 1000;
-var video = document.getElementById("video");
+var video = document.getElementById('video');
 
-var takeSnapshotUI = createClickFeedbackUI();
+//var takeSnapshotUI = createClickFeedbackUI();
 
 //var video;
 var takePhotoButton;
@@ -27,33 +27,33 @@ var currentFacingMode = 'environment';
 const createGestureRecognizer = async (selectedOption) => {
   console.log(selectedOption);
   let country;
-  if (selectedOption === "PE") {
-    country = "abecedario-peru-v2";
+  if (selectedOption === 'PE') {
+    country = 'abecedario-peru-v2';
   } else {
-    if (selectedOption === "EC") {
-      country = "abecedario-ecuador-v2";
+    if (selectedOption === 'EC') {
+      country = 'abecedario-ecuador-v2';
     } else {
-      if (selectedOption === "MX") {
-        country = "abecedario-mx-v2";
+      if (selectedOption === 'MX') {
+        country = 'abecedario-mx-v2';
       } else {
-        country = "abecedario-usa";
+        country = 'abecedario-usa';
       }
     }
   }
   const vision = await FilesetResolver.forVisionTasks(
-    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm',
   );
   gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath: `./${country}.task`,
-      delegate: "GPU",
+      delegate: 'GPU',
     },
     runningMode: runningMode,
   });
   //demosSection.classList.remove("invisible");
 };
 
-createGestureRecognizer("Perú");
+createGestureRecognizer('Perú');
 // this function counts the amount of video inputs
 // it replaces DetectRTC that was previously implemented.
 function deviceCount() {
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
           amountOfCameras = deviceCount;
 
           // init the UI and the camera stream
-          initCameraUI();
+          //initCameraUI();
           initCameraStream();
         });
       })
@@ -125,64 +125,69 @@ document.addEventListener('DOMContentLoaded', function (event) {
     );
   }
 });
-const canvasElement = document.getElementById("output_canvas");
-const canvasCtx = canvasElement.getContext("2d");
+const canvasElement = document.getElementById('output_canvas');
+const canvasCtx = canvasElement.getContext('2d');
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
-  console.log("predictWebcam")
-  const webcamElement = document.getElementById("video");
+  //console.log('predictWebcam');
+  const webcamElement = document.getElementById('video');
   // Now let's start detecting the stream.
-  if (runningMode === "IMAGE") {
-    runningMode = "VIDEO";
-    await gestureRecognizer.setOptions({ runningMode: "VIDEO" });
+  if (runningMode === 'IMAGE') {
+    runningMode = 'VIDEO';
+    await gestureRecognizer.setOptions({ runningMode: 'VIDEO' });
   }
   let nowInMs = Date.now();
   if (video.currentTime !== lastVideoTime) {
     lastVideoTime = video.currentTime;
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
-  console.log(results)
+  //console.log(results);
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  canvasElement.style.height = videoHeight;
-  webcamElement.style.height = videoHeight;
-  canvasElement.style.width = videoWidth;
-  webcamElement.style.width = videoWidth;
+  canvasElement.style.height = video.videoHeight;
+  webcamElement.style.height = video.videoHeight;
+  canvasElement.style.width = video.videoWidth;
+  webcamElement.style.width = video.videoWidth;
   if (results.landmarks) {
     for (const landmarks of results.landmarks) {
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-        color: "#00FF00",
+        color: '#00FF00',
         lineWidth: 2,
       });
-      drawLandmarks(canvasCtx, landmarks, { color: "#FF0000", lineWidth: 0.5 });
+      drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 0.5 });
     }
   }
   canvasCtx.restore();
   if (results.gestures.length > 0) {
-    //const currentTime = Date.now(); // Obtener el tiempo actual
+    const currentTime = Date.now(); // Obtener el tiempo actual
     const categoryName = results.gestures[0][0].categoryName;
     const categoryScore = parseFloat(
-      results.gestures[0][0].score * 100
+      results.gestures[0][0].score * 100,
     ).toFixed(2);
-    console.log(`LETRA: ${categoryName}\n PROBABILIDAD: ${categoryScore} %\n FRASE: ${gestureText.join('')}`)
+    /*console.log(
+      `LETRA: ${categoryName}\n PROBABILIDAD: ${categoryScore} %\n FRASE: ${gestureText.join(
+        '',
+      )}`,
+    );*/
+    console.log('Gesto: ' + results);
     // Verificar si ha pasado suficiente tiempo desde el último gesto similar
-    /*if (currentTime - lastGestureTime >= minTimeBetweenGestures) {
+    if (currentTime - lastGestureTime >= minTimeBetweenGestures) {
       // Filtrar gestos repetidos
-      if (categoryName !== lastSavedLetter || categoryName === "R") {
+      if (categoryName !== lastSavedLetter || categoryName === 'R') {
         //gestureOutput.style.display = "block";
         //gestureOutput.style.width = videoWidth;
         //gestureOutput.innerText = `LETRA: ${categoryName}\n PROBABILIDAD: ${categoryScore} %\n FRASE: ${gestureText.join('')}`;
         if (categoryScore > 90) {
           gestureText.push(categoryName);
-          console.log(gestureText);
+          //console.log(gestureText);
 
           // Actualizar el tiempo del último gesto y la última letra guardada
           lastGestureTime = currentTime;
           lastSavedLetter = categoryName;
         }
       }
-    }*/
+    }
   } else {
     //gestureOutput.style.display = "none";
   }
@@ -201,10 +206,10 @@ function initCameraUI() {
   // https://developer.mozilla.org/nl/docs/Web/HTML/Element/button
   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
   // Activate the webcam stream.
-  
+
   takePhotoButton.addEventListener('click', function () {
-    takeSnapshotUI();
-    takeSnapshot();
+    //takeSnapshotUI();
+    //takeSnapshot();
   });
 
   // -- fullscreen part
@@ -281,6 +286,25 @@ function initCameraUI() {
   );
 }
 
+/*window.addEventListener('resize', () => {
+  const vidContainer = document.getElementById('vid_container');
+  const outputCanvas = document.getElementById('output_canvas');
+  const video = document.getElementById('video');
+
+  console.log('vidContainer.clientWidth ' + vidContainer.clientWidth);
+  console.log('vidContainer.clientHeight ' + vidContainer.clientHeight);
+  /*video.style.height = vidContainer.clientWidth;
+  video.style.width = vidContainer.clientWidth;
+  console.log('video.style.height ' + video.style.height);
+  // Ajusta el tamaño del canvas al tamaño del contenedor
+  video.width = vidContainer.clientWidth;
+  video.height = vidContainer.clientHeight;
+});
+*/
+
+// Llama a esto una vez para configurar el tamaño inicial del canvas
+window.dispatchEvent(new Event('resize'));
+
 // https://github.com/webrtc/samples/blob/gh-pages/src/content/devices/input-output/js/main.js
 function initCameraStream() {
   // stop any active streams in the window
@@ -317,19 +341,19 @@ function initCameraStream() {
   function handleSuccess(stream) {
     window.stream = stream; // make stream available to browser console
     video.srcObject = stream;
-    video.addEventListener("loadeddata", predictWebcam);
+    video.addEventListener('loadeddata', predictWebcam);
 
-    if (constraints.video.facingMode) {
+    /*if (constraints.video.facingMode) {
       if (constraints.video.facingMode === 'environment') {
         switchCameraButton.setAttribute('aria-pressed', true);
       } else {
         switchCameraButton.setAttribute('aria-pressed', false);
       }
-    }
+    }*/
 
     const track = window.stream.getVideoTracks()[0];
     const settings = track.getSettings();
-    console.log(track+" "+settings)
+    console.log(track + ' ' + settings);
     /*str = JSON.stringify(settings, null, 4);
     console.log('settings ' + str);*/
   }
