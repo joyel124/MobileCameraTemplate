@@ -1,13 +1,38 @@
 body {
   margin: 0px;
   padding: 0px;
-  background: #000;
+  background: #ffffff;
 }
 
 #vid_container {
   position: relative;
   top: 0;
   left: 0;
+}
+
+#addSpacingButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#deleteButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.text{
+  display: flex;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  z-index: 1;
 }
 
 .output_canvas {
@@ -28,7 +53,7 @@ body {
 
 #gui_controls {
   position: fixed;
-  background-color: #111; /*rgba(255, 0, 0, 0.5);*/
+  background-color: #2847ac; /*rgba(255, 0, 0, 0.5);*/
   z-index: 2;
   bottom: 0;
 }

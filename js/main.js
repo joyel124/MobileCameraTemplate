@@ -56,6 +56,24 @@ const createGestureRecognizer = async (selectedOption) => {
 createGestureRecognizer('Perú');
 // this function counts the amount of video inputs
 // it replaces DetectRTC that was previously implemented.
+function actualizarTextoEnHTML() {
+  // Actualiza el contenido del elemento <span> con id "gestureText"
+  const spanElement = document.getElementById('gestureText');
+  spanElement.textContent = `Frase: ${gestureText.join('')}`;
+}
+function resetTranslation() {
+  gestureText.pop(); // Eliminar el ultimo elemento del arreglo
+  actualizarTextoEnHTML();
+}
+function spaceButtonFunction() {
+  gestureText.push(' ');
+  actualizarTextoEnHTML();
+}
+const spaceButton = document.getElementById('addSpacingButton');
+const resetButton = document.getElementById('deleteButton');
+resetButton.addEventListener('click', resetTranslation);
+spaceButton.addEventListener('click', spaceButtonFunction);
+setInterval(actualizarTextoEnHTML, 1000);
 function deviceCount() {
   return new Promise(function (resolve) {
     var videoInCount = 0;
@@ -125,8 +143,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
     );
   }
 });
-const canvasElement = document.getElementById('output_canvas');
-const canvasCtx = canvasElement.getContext('2d');
+/*const canvasElement = document.getElementById('output_canvas');
+const canvasCtx = canvasElement.getContext('2d');*/
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
@@ -143,13 +161,13 @@ async function predictWebcam() {
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
   //console.log(results);
-  canvasCtx.save();
+  /*canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasElement.style.height = video.videoHeight;
   webcamElement.style.height = video.videoHeight;
   canvasElement.style.width = video.videoWidth;
-  webcamElement.style.width = video.videoWidth;
-  if (results.landmarks) {
+  webcamElement.style.width = video.videoWidth;*/
+  /*if (results.landmarks) {
     for (const landmarks of results.landmarks) {
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
         color: '#00FF00',
@@ -157,8 +175,8 @@ async function predictWebcam() {
       });
       drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 0.5 });
     }
-  }
-  canvasCtx.restore();
+  }*/
+  //canvasCtx.restore();
   if (results.gestures.length > 0) {
     const currentTime = Date.now(); // Obtener el tiempo actual
     const categoryName = results.gestures[0][0].categoryName;
@@ -170,7 +188,7 @@ async function predictWebcam() {
         '',
       )}`,
     );*/
-    console.log('Gesto: ' + results);
+
     // Verificar si ha pasado suficiente tiempo desde el último gesto similar
     if (currentTime - lastGestureTime >= minTimeBetweenGestures) {
       // Filtrar gestos repetidos
@@ -180,7 +198,7 @@ async function predictWebcam() {
         //gestureOutput.innerText = `LETRA: ${categoryName}\n PROBABILIDAD: ${categoryScore} %\n FRASE: ${gestureText.join('')}`;
         if (categoryScore > 90) {
           gestureText.push(categoryName);
-          //console.log(gestureText);
+          console.log(gestureText);
 
           // Actualizar el tiempo del último gesto y la última letra guardada
           lastGestureTime = currentTime;
