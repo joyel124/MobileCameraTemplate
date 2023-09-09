@@ -19,7 +19,8 @@ body {
 #selectButton{
   position: absolute;
   top: 0;
-  left: 35%;
+  left: 50%; /* Deja el 50% como punto de referencia */
+  transform: translateX(-50%);
   z-index: 1;
   background-color: #ffffff; /* Color de fondo */
   color: #000000; /* Color del texto */
