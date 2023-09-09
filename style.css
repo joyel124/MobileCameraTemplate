@@ -12,14 +12,34 @@ body {
 
 #addSpacingButton {
   position: absolute;
+  top: 3;
+  left: 5;
+}
+
+#selectButton{
+  position: absolute;
   top: 0;
-  left: 0;
+  left: 35%;
+  z-index: 1;
+  background-color: #ffffff; /* Color de fondo */
+  color: #000000; /* Color del texto */
+  border: 1px solid #000000; /* Borde */
+  padding: 5px 10px; /* Relleno interno */
+  font-size: 16px; /* Tamaño de fuente */
+  border-radius: 5px; /* Borde redondeado */
+  outline: none;
+}
+
+#soundButton{
+  position: absolute;
+  top: 7;
+  left: 46%;
 }
 
 #deleteButton {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5;
+  right: 5;
 }
 
 .text{
@@ -67,7 +87,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-
   z-index: 10;
   background-color: #111;
 }
@@ -78,13 +97,10 @@ body {
 button {
   outline: none;
   position: absolute;
-  color: white;
   display: block;
-  opacity: 1;
   background: transparent;
-  border: solid 2px #fff;
+  border: none;
   padding: 0;
-  text-shadow: 0px 0px 4px black;
   background-position: center center;
   background-repeat: no-repeat;
   pointer-events: auto;

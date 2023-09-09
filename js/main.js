@@ -45,7 +45,7 @@ const createGestureRecognizer = async (selectedOption) => {
   );
   gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
     baseOptions: {
-      modelAssetPath: `./${country}.task`,
+      modelAssetPath: `models/${country}.task`,
       delegate: 'GPU',
     },
     runningMode: runningMode,
@@ -69,11 +69,32 @@ function spaceButtonFunction() {
   gestureText.push(' ');
   actualizarTextoEnHTML();
 }
+const selectButton = document.getElementById('selectButton');
+
+selectButton.addEventListener('change', function () {
+  // Obtiene el valor seleccionado
+  const valorSeleccionado = selectButton.value;
+
+  // Muestra el valor seleccionado en la consola
+  console.log('Opción seleccionada:', valorSeleccionado);
+  createGestureRecognizer(valorSeleccionado);
+});
+
 const spaceButton = document.getElementById('addSpacingButton');
 const resetButton = document.getElementById('deleteButton');
 resetButton.addEventListener('click', resetTranslation);
 spaceButton.addEventListener('click', spaceButtonFunction);
 setInterval(actualizarTextoEnHTML, 1000);
+
+document.getElementById('soundButton').addEventListener('click', function () {
+  const synth = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(gestureText.join(''));
+  utterance.lang = 'es-MX';
+  utterance.pitch = 1;
+  utterance.rate = 1;
+  utterance.volume = 1;
+  synth.speak(utterance);
+});
 function deviceCount() {
   return new Promise(function (resolve) {
     var videoInCount = 0;
