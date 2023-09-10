@@ -183,9 +183,7 @@ async function predictWebcam() {
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
   //console.log(results);
-  canvasElement.style.height = video.videoHeight;
-  //webcamElement.style.height = video.videoHeight;
-  canvasElement.style.width = video.videoWidth;
+
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasElement.style.height = video.videoHeight;
