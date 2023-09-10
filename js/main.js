@@ -183,17 +183,18 @@ async function predictWebcam() {
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
   //console.log(results);
-
+  canvasElement.height = video.videoHeight;
+  canvasElement.width = video.videoWidth;
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  canvasElement.style.height = video.videoHeight;
+  canvasElement.height = video.videoHeight;
   //webcamElement.style.height = video.videoHeight;
-  canvasElement.style.width = video.videoWidth;
+  canvasElement.width = video.videoWidth;
   //webcamElement.style.width = video.videoWidth;
   if (results.landmarks) {
     for (const landmarks of results.landmarks) {
-      canvasElement.style.height = video.videoHeight;
-      canvasElement.style.width = video.videoWidth;
+      canvasElement.height = video.videoHeight;
+      canvasElement.width = video.videoWidth;
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
         color: '#00FF00',
         lineWidth: 2,
