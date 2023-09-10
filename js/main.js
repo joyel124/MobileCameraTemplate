@@ -4,7 +4,7 @@ import {
 } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0';
 const demosSection = document.getElementById('vid_container');
 let gestureRecognizer;
-let runningMode = 'IMAGE';
+let runningMode = 'VIDEO';
 let enableWebcamButton;
 let webcamRunning = true;
 const videoHeight = '879px';
@@ -13,7 +13,6 @@ let gestureText = [];
 let lastSavedLetter = '';
 let lastGestureTime = 0; // Registro del tiempo del último gesto
 const minTimeBetweenGestures = 1000;
-var video = document.getElementById('video');
 
 //var takeSnapshotUI = createClickFeedbackUI();
 
@@ -164,8 +163,10 @@ document.addEventListener('DOMContentLoaded', function (event) {
     );
   }
 });
-/*const canvasElement = document.getElementById('output_canvas');
-const canvasCtx = canvasElement.getContext('2d');*/
+const canvasElement = document.getElementById('output_canvas');
+const canvasCtx = canvasElement.getContext('2d');
+var video = document.getElementById('video');
+
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
@@ -182,22 +183,27 @@ async function predictWebcam() {
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
   //console.log(results);
-  /*canvasCtx.save();
+  canvasElement.style.height = video.videoHeight;
+  //webcamElement.style.height = video.videoHeight;
+  canvasElement.style.width = video.videoWidth;
+  canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasElement.style.height = video.videoHeight;
-  webcamElement.style.height = video.videoHeight;
+  //webcamElement.style.height = video.videoHeight;
   canvasElement.style.width = video.videoWidth;
-  webcamElement.style.width = video.videoWidth;*/
-  /*if (results.landmarks) {
+  //webcamElement.style.width = video.videoWidth;
+  if (results.landmarks) {
     for (const landmarks of results.landmarks) {
+      canvasElement.style.height = video.videoHeight;
+      canvasElement.style.width = video.videoWidth;
       drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
         color: '#00FF00',
         lineWidth: 2,
       });
       drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 0.5 });
     }
-  }*/
-  //canvasCtx.restore();
+  }
+  canvasCtx.restore();
   if (results.gestures.length > 0) {
     const currentTime = Date.now(); // Obtener el tiempo actual
     const categoryName = results.gestures[0][0].categoryName;
