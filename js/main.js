@@ -47,10 +47,15 @@ const createGestureRecognizer = async (selectedOption) => {
       modelAssetPath: `models/${country}.task`,
       delegate: 'GPU',
     },
+    numHands: 2,
     runningMode: runningMode,
   });
   //demosSection.classList.remove("invisible");
 };
+
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
 
 createGestureRecognizer('Perú');
 // this function counts the amount of video inputs
@@ -182,7 +187,7 @@ async function predictWebcam() {
     lastVideoTime = video.currentTime;
     results = gestureRecognizer.recognizeForVideo(video, nowInMs);
   }
-  //console.log(results);
+  console.log(results);
   canvasElement.height = video.videoHeight;
   canvasElement.width = video.videoWidth;
   canvasCtx.save();
